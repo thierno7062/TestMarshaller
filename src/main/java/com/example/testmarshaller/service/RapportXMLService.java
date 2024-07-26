@@ -36,6 +36,7 @@ public class RapportXMLService {
     private SubjectroleRepository subjectroleRepository;
     private CompanyRepo companyRepo;
 
+
     public ContractListXML listXML() throws Exception {
         List<ContractEntity> contractListEntity = this.contractRepo.findAll();
         List<CollateralEntity> collateralListEntity = this.collateralRepo.findAll();
@@ -130,7 +131,7 @@ public class RapportXMLService {
         return contractListXML;
     }
 
-    public RapportXML rapportXML() throws Exception{
+    /*public RapportXML rapportXML() throws Exception{
         List<ContractEntity> contractListEntity = this.contractRepo.findAll();
         RapportXML rapportXML= null;
 
@@ -151,16 +152,18 @@ public class RapportXMLService {
         FileHelper.convertReportToXML(rapportXML, "/Users/thiernoniang/Documents/2024/Fichier XML");
 
         return rapportXML;
-    }
+    }*/
 
     public ContractListXML contractListXML() throws Exception{
         List<ContractEntity> contractListEntity = this.contractRepo.findAll();
+        //List<ContractEntity> contractEntitiesCode = this.contractRepo.findAllByContractCode(String code);
         RapportXML rapportXML= null;
 
         List<ContractListXML> contract = new ArrayList<ContractListXML>();
 
         ContractCodeXML contractCode= new ContractCodeXML();
         ContractXML contractXML = new ContractXML();
+        CollateralXML collateralXML = new CollateralXML();
 
         for (ContractEntity item: contractListEntity){
             ContractListXML ctl = new ContractListXML();
@@ -172,8 +175,22 @@ public class RapportXMLService {
 
             ContractXML ctxml = new ContractXML();
             ctxml.setBTMID_ContractData(item.getId());
+            ctxml.setContractCode(item.getContractCode());
+            ctxml.setConsentCode(item.getConsentCode());
+            ctxml.setConsentedLookUp(item.getConsentedLookUp());
+            ctxml.setBranch(item.getBranch());
+            //ctxml.setPhaseOfContractLookUp(item.getPhaseOfContract());
 
             ctl.setContractXMLS(ctxml);
+
+            CollateralXML clxml = new CollateralXML();
+            clxml.setId(item.getCollateral().getId());
+            clxml.setCollateralCode(item.getCollateral().getCollateralCode());
+            clxml.setCollateralTypeLookUp(item.getCollateral().getCollateralTypeLookUp());
+            clxml.setCollateralDescription(item.getCollateral().getCollateralDescription());
+            clxml.setCollateralValue(item.getCollateral().getCollateralValue());
+            clxml.setCollateralvaluecurrencylookup(item.getCollateral().getCollateralvaluecurrencylookup());
+            clxml.setValuationDate(item.getCollateral().getValuationDate());
 
             contract.add(ctl);
             //contractXML.setBTMID_ContractData(item.getId());
@@ -181,7 +198,7 @@ public class RapportXMLService {
 
         }
 
-        ContractListXML contractListXML= new ContractListXML(contractCode, contractXML);
+        ContractListXML contractListXML= new ContractListXML(contractCode, contractXML, collateralXML);
         rapportXML= new RapportXML(contract);
         FileHelper.convertReportToXML(rapportXML, "./");
 

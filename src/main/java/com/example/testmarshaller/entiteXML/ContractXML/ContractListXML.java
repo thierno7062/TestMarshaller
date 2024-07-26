@@ -1,5 +1,6 @@
 package com.example.testmarshaller.entiteXML.ContractXML;
 
+import com.example.testmarshaller.entiteXML.CollateralXML.CollateralXML;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -21,8 +22,8 @@ public class ContractListXML {
     @XmlElement(name = "ContractData")
     ContractXML contractXMLS;
 
- /*    @XmlElement(name = "Collateral")
-    CollateralXML collateralXMLS; */
+    @XmlElement(name = "Collateral")
+    CollateralXML collateralXMLS;
 
   /*   @XmlElement(name = "Company")
     CompanyXML companyXMLS;
